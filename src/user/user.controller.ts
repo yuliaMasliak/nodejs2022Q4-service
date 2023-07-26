@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Body,
   Patch,
   Param,
@@ -10,10 +11,12 @@ import {
   HttpStatus,
   BadRequestException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { validate as isUUID } from 'uuid';
 
 @Controller('user')
 export class UserController {
@@ -21,15 +24,11 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      const newUser = await this.userService.create(createUserDto);
-      if (newUser !== null) {
-        return newUser;
-      } else {
-        throw new BadRequestException('User data fields required');
-      }
-    } catch (err) {
+  create(@Body() createUserDto: CreateUserDto) {
+    const newUser = this.userService.create(createUserDto);
+    if (newUser !== null) {
+      return newUser;
+    } else {
       throw new BadRequestException('User data fields required');
     }
   }
@@ -51,9 +50,19 @@ export class UserController {
     }
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    if (!isUUID(id)) {
+      throw new BadRequestException('Not UUID type of user id');
+    }
+    const user = this.userService.update(id, updateUserDto);
+    if (user === null) {
+      throw new ForbiddenException('Wrong old password');
+    } else if (user === undefined) {
+      throw new NotFoundException('No user with such id');
+    } else {
+      return user;
+    }
   }
 
   @Delete(':id')

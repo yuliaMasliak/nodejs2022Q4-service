@@ -55,8 +55,20 @@ export class UserService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    let index: number;
+    const user = this.users.find((user, i) => {
+      index = i;
+      return user.id === id;
+    });
+    if (!user) {
+      return undefined;
+    } else if (user.password !== updateUserDto.oldPassword) {
+      return null;
+    }
+    user.password = updateUserDto.newPassword;
+    this.users.splice(index, 1, user);
+    return user;
   }
 
   remove(id: number) {
