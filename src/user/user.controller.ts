@@ -6,9 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
+  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, userData } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
@@ -16,9 +19,18 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() userData: userData) {
-    console.log(new CreateUserDto(userData));
-    return this.userService.create(new CreateUserDto(userData));
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      const newUser = await this.userService.create(createUserDto);
+      if (newUser !== null) {
+        return newUser;
+      } else {
+        throw new BadRequestException('User data fields required');
+      }
+    } catch (err) {
+      throw new BadRequestException('User data fields required');
+    }
   }
 
   @Get()
