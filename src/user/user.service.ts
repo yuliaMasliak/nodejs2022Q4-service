@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserEntity } from './entities/user.entity';
 import { User } from 'src/models';
-import { validate as isUUID } from 'uuid';
+import { getTimeStamp } from 'src/helpers';
 
 @Injectable()
 export class UserService {
@@ -29,7 +29,6 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     if (createUserDto.login && createUserDto.password) {
       const newUser = new CreateUserEntity(createUserDto);
-      console.log(newUser);
       this.users.push(newUser);
       return newUser;
     } else {
@@ -42,17 +41,13 @@ export class UserService {
   }
 
   findOne(id: string) {
-    if (isUUID(id)) {
-      const user = this.users.find((user) => {
-        return user.id === id;
-      });
-      if (!user) {
-        return undefined;
-      }
-      return user;
-    } else {
-      return null;
+    const user = this.users.find((user) => {
+      return user.id === id;
+    });
+    if (!user) {
+      return undefined;
     }
+    return user;
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
@@ -67,6 +62,8 @@ export class UserService {
       return null;
     }
     user.password = updateUserDto.newPassword;
+    user.updatedAt = getTimeStamp();
+    user.version += 1;
     this.users.splice(index, 1, user);
     return user;
   }
@@ -80,7 +77,6 @@ export class UserService {
     if (!user) {
       return undefined;
     }
-
     this.users.splice(index, 1);
     return true;
   }
