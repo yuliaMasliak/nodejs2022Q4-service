@@ -6,10 +6,19 @@ export class CreateUserEntity {
   login: string;
   password: string;
   version: number = 1;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
+  createdAt: number;
+  updatedAt: number;
+
   constructor(data: CreateUserDto) {
     this.login = data.login;
-    this.password = data.login;
+    this.password = data.password;
+    this.createdAt = this.getDate();
+    this.updatedAt = this.getDate();
+  }
+
+  getDate() {
+    const currentDate = new Date();
+    const currentTimestamp = currentDate.getTime();
+    return Math.floor(currentTimestamp / 1000);
   }
 }

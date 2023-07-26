@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -40,7 +41,14 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    const user = this.userService.findOne(id);
+    if (user === null) {
+      throw new BadRequestException('Not UUID type of user id');
+    } else if (user === undefined) {
+      throw new NotFoundException('No user with such id');
+    } else {
+      return user;
+    }
   }
 
   @Patch(':id')
