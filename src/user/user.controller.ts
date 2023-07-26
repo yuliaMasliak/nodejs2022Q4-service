@@ -4,7 +4,6 @@ import {
   Post,
   Put,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
@@ -67,6 +66,12 @@ export class UserController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    if (!isUUID(id)) {
+      throw new BadRequestException('Not UUID type of user id');
+    }
+    const user = this.userService.remove(id);
+    if (user === undefined) {
+      throw new NotFoundException('No user with such id');
+    }
   }
 }

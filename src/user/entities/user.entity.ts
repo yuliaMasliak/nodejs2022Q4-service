@@ -5,7 +5,7 @@ export class CreateUserEntity {
   id: string = uuidv4();
   login: string;
   password: string;
-  version: number = 1;
+  version = 1;
   createdAt: number;
   updatedAt: number;
 
