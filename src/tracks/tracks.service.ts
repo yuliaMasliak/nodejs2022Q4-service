@@ -6,7 +6,7 @@ import { Track } from 'src/models';
 
 @Injectable()
 export class TracksService {
-  private tracks: Track[] = [];
+  public tracks: Track[] = [];
 
   create(createTrackDto: CreateTrackDto) {
     if (createTrackDto.name && createTrackDto.duration) {

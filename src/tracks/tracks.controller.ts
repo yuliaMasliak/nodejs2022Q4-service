@@ -10,7 +10,6 @@ import {
   HttpStatus,
   BadRequestException,
   NotFoundException,
-  ForbiddenException,
   Header,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
@@ -52,6 +51,7 @@ export class TracksController {
   }
 
   @Put(':id')
+  @Header('Content-Type', 'application/json')
   update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
     isValidUUID(id);
     const track = this.tracksService.update(id, updateTrackDto);
