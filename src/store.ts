@@ -1,4 +1,4 @@
-import { Artist, Track, User, Album } from './models';
+import { Artist, User, Album, Favorites, Track } from './models';
 
 export class Storage {
   users: User[] = [
@@ -22,6 +22,11 @@ export class Storage {
   tracks: Track[] = [];
   artists: Artist[] = [];
   albums: Album[] = [];
+  favorites: Favorites = {
+    artists: [],
+    albums: [],
+    tracks: [],
+  };
 
   updateStoreWithArtist(artistId: string) {
     this.tracks.forEach((track) => {
