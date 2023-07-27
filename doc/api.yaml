@@ -18,7 +18,7 @@ components:
         login:
           type: string
           example: 'TestUser'
-          login:
+        password:
           type: string
           example: '12345'
         version:
@@ -332,11 +332,11 @@ paths:
 
     delete:
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
       tags:
         - Users
       summary: Delete user
@@ -404,7 +404,7 @@ paths:
           description: '#/components/responses/BadRequestError'
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /track/{id}:
+  /track/{trackId}:
     parameters:
       - name: id
         in: path
@@ -560,7 +560,7 @@ paths:
           description: '#/components/responses/BadRequestError'
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /album/{id}:
+  /album/{albumId}:
     parameters:
       - name: id
         in: path
@@ -684,7 +684,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /artist/{id}:
+  /artist/{artistId}:
     parameters:
       - name: id
         in: path
@@ -771,7 +771,7 @@ paths:
                 $ref: '#/components/schemas/Favorites'
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /favs/track/{id}:
+  /favs/track/{trackId}:
     parameters:
       - name: id
         in: path
@@ -807,7 +807,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Track was not found.
-  /favs/album/{id}:
+  /favs/album/{albumId}:
     parameters:
       - name: id
         in: path
@@ -843,7 +843,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Album was not found.
-  /favs/artist/{id}:
+  /favs/artist/{artistId}:
     parameters:
       - name: id
         in: path
