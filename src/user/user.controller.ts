@@ -17,6 +17,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { isValidUUID } from '../helpers';
+import { isUUID } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -27,6 +28,8 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     const newUser = this.userService.create(createUserDto);
+    console.log(newUser);
+
     if (newUser !== null) {
       return newUser;
     } else {
@@ -42,6 +45,7 @@ export class UserController {
 
   @Get(':id')
   @Header('Content-Type', 'application/json')
+  @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string) {
     isValidUUID(id);
     const user = this.userService.findOne(id);
@@ -54,13 +58,16 @@ export class UserController {
 
   @Put(':id')
   @Header('Content-Type', 'application/json')
+  @HttpCode(HttpStatus.OK)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     isValidUUID(id);
     const user = this.userService.update(id, updateUserDto);
     if (user === null) {
-      throw new ForbiddenException('Wrong old password');
+      throw new BadRequestException('Required fields missing');
     } else if (user === undefined) {
       throw new NotFoundException('User does not exist');
+    } else if (user === false) {
+      throw new ForbiddenException('Wrong old password');
     } else {
       return user;
     }
@@ -68,6 +75,7 @@ export class UserController {
 
   @Delete(':id')
   @Header('Content-Type', 'application/json')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     isValidUUID(id);
     const user = this.userService.remove(id);

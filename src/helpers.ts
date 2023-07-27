@@ -9,5 +9,5 @@ export function isValidUUID(id: string) {
 export function getTimeStamp() {
   const currentDate = new Date();
   const currentTimestamp = currentDate.getTime();
-  return Math.floor(currentTimestamp / 1000);
+  return currentTimestamp;
 }

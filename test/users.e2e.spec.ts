@@ -207,7 +207,6 @@ describe('Users (e2e)', () => {
           oldPassword: 'test',
           newPassword: 'fake',
         });
-
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     });
 

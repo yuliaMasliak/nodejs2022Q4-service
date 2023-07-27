@@ -30,7 +30,9 @@ export class UserService {
     if (createUserDto.login && createUserDto.password) {
       const newUser = new CreateUserEntity(createUserDto);
       this.users.push(newUser);
-      return newUser;
+      const response = { ...newUser };
+      delete response.password;
+      return response;
     } else {
       return null;
     }
@@ -56,16 +58,22 @@ export class UserService {
       index = i;
       return user.id === id;
     });
+    if (!updateUserDto.oldPassword || !updateUserDto.newPassword) {
+      return null;
+    }
     if (!user) {
       return undefined;
     } else if (user.password !== updateUserDto.oldPassword) {
-      return null;
+      return false;
+    } else {
+      user.password = updateUserDto.newPassword;
+      user.updatedAt = getTimeStamp();
+      user.version += 1;
+      this.users.splice(index, 1, user);
+      const response = { ...user };
+      delete response.password;
+      return response;
     }
-    user.password = updateUserDto.newPassword;
-    user.updatedAt = getTimeStamp();
-    user.version += 1;
-    this.users.splice(index, 1, user);
-    return user;
   }
 
   remove(id: string) {
