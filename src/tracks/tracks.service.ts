@@ -2,16 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackEntity } from './entities/track.entity';
-import { Track } from 'src/models';
+import { Store } from 'src/store';
 
 @Injectable()
 export class TracksService {
-  public tracks: Track[] = [];
-
   create(createTrackDto: CreateTrackDto) {
     if (createTrackDto.name && createTrackDto.duration) {
       const newTrack = new TrackEntity(createTrackDto);
-      this.tracks.push(newTrack);
+      Store.tracks.push(newTrack);
       return newTrack;
     } else {
       return null;
@@ -19,11 +17,11 @@ export class TracksService {
   }
 
   findAll() {
-    return this.tracks;
+    return Store.tracks;
   }
 
   findOne(id: string) {
-    const track = this.tracks.find((track) => {
+    const track = Store.tracks.find((track) => {
       return track.id === id;
     });
     if (!track) {
@@ -34,7 +32,7 @@ export class TracksService {
 
   update(id: string, updateTrackDto: UpdateTrackDto) {
     let index: number;
-    const track = this.tracks.find((track, i) => {
+    const track = Store.tracks.find((track, i) => {
       index = i;
       return track.id === id;
     });
@@ -48,20 +46,20 @@ export class TracksService {
     track.duration = updateTrackDto.duration;
     track.artistId = updateTrackDto.artistId;
     track.albumId = updateTrackDto.albumId;
-    this.tracks.splice(index, 1, track);
+    Store.tracks.splice(index, 1, track);
     return track;
   }
 
   remove(id: string) {
     let index: number;
-    const track = this.tracks.find((track, i) => {
+    const track = Store.tracks.find((track, i) => {
       index = i;
       return track.id === id;
     });
     if (!track) {
       return undefined;
     }
-    this.tracks.splice(index, 1);
+    Store.tracks.splice(index, 1);
     return true;
   }
 }

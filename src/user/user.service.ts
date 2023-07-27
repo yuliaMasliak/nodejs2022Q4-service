@@ -4,32 +4,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserEntity } from './entities/user.entity';
 import { User } from 'src/models';
 import { getTimeStamp } from 'src/helpers';
+import { Store } from 'src/store';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [
-    {
-      id: '80eb77de-617b-4551-b0cc-0d20c921bfbe',
-      version: 1,
-      login: 'Yulia',
-      password: '12345',
-      createdAt: 1690358040,
-      updatedAt: 1690358040,
-    },
-    {
-      id: '37eb77de-617b-4551-b0cc-0d20c921bfbe',
-      version: 1,
-      login: 'Masha',
-      password: '12345',
-      createdAt: 1690358040,
-      updatedAt: 1690358040,
-    },
-  ];
-
   create(createUserDto: CreateUserDto) {
     if (createUserDto.login && createUserDto.password) {
       const newUser = new CreateUserEntity(createUserDto);
-      this.users.push(newUser);
+      Store.users.push(newUser);
       const response = { ...newUser };
       delete response.password;
       return response;
@@ -39,11 +21,11 @@ export class UserService {
   }
 
   findAll() {
-    return this.users;
+    return Store.users;
   }
 
   findOne(id: string) {
-    const user = this.users.find((user) => {
+    const user = Store.users.find((user) => {
       return user.id === id;
     });
     if (!user) {
@@ -54,7 +36,7 @@ export class UserService {
 
   update(id: string, updateUserDto: UpdateUserDto) {
     let index: number;
-    const user = this.users.find((user, i) => {
+    const user = Store.users.find((user, i) => {
       index = i;
       return user.id === id;
     });
@@ -69,7 +51,7 @@ export class UserService {
       user.password = updateUserDto.newPassword;
       user.updatedAt = getTimeStamp();
       user.version += 1;
-      this.users.splice(index, 1, user);
+      Store.users.splice(index, 1, user);
       const response = { ...user };
       delete response.password;
       return response;
@@ -78,14 +60,14 @@ export class UserService {
 
   remove(id: string) {
     let index: number;
-    const user = this.users.find((user, i) => {
+    const user = Store.users.find((user, i) => {
       index = i;
       return user.id === id;
     });
     if (!user) {
       return undefined;
     }
-    this.users.splice(index, 1);
+    Store.users.splice(index, 1);
     return true;
   }
 }

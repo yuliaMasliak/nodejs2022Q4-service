@@ -1,4 +1,4 @@
-import { Artist, Track, User } from './models';
+import { Artist, Track, User, Album } from './models';
 
 export class Storage {
   users: User[] = [
@@ -21,14 +21,24 @@ export class Storage {
   ];
   tracks: Track[] = [];
   artists: Artist[] = [];
+  albums: Album[] = [];
 
-  updateTracksWithArtist(artistId: string) {
-    console.log(this.tracks);
-
+  updateStoreWithArtist(artistId: string) {
     this.tracks.forEach((track) => {
-      console.log(track);
       if (track.artistId == artistId) {
         track.artistId = null;
+      }
+    });
+    this.albums.forEach((album) => {
+      if (album.artistId == artistId) {
+        album.artistId = null;
+      }
+    });
+  }
+  updateTracksWithAlbum(albumId: string) {
+    this.tracks.forEach((track) => {
+      if (track.albumId === albumId) {
+        track.albumId = null;
       }
     });
   }
