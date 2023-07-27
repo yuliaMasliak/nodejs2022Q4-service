@@ -16,7 +16,7 @@ export function getTimeStamp() {
   return currentTimestamp;
 }
 
-export function checkServerIdentity(type: string, id: string) {
+export function checkEntity(type: string, id: string) {
   switch (type) {
     case 'track':
       const track = Store.tracks.find((track) => {

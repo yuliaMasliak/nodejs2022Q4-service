@@ -47,6 +47,41 @@ export class Storage {
       }
     });
   }
+  removeTrackFromFavs(id: string) {
+    let index: number;
+    const track = this.favorites.tracks.find((trackId, i) => {
+      index = i;
+      return trackId === id;
+    });
+    if (track) {
+      this.favorites.tracks.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+  removeAlbumsFromFavs(id: string) {
+    let index: number;
+    const album = this.favorites.albums.find((albumId, i) => {
+      index = i;
+      return albumId === id;
+    });
+    if (album) {
+      this.favorites.albums.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+  removeArtistsFromFavs(id: string) {
+    let index: number;
+    const artist = this.favorites.artists.find((artistId, i) => {
+      index = i;
+      return artistId === id;
+    });
+    if (artist) {
+      this.favorites.artists.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
 }
-
 export const Store = new Storage();

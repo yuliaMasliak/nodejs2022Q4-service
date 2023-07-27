@@ -2,21 +2,16 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
   Header,
   HttpCode,
   HttpStatus,
-  BadRequestException,
   HttpException,
+  NotFoundException,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { UpdateFavoriteDto } from './dto/update-favorite.dto';
-import { IsUUID } from 'class-validator';
-import { checkServerIdentity, isValidUUID } from 'src/helpers';
+import { checkEntity, isValidUUID } from 'src/helpers';
 import { Favorites } from 'src/models';
 
 @Controller('favs')
@@ -31,7 +26,7 @@ export class FavoritesController {
     @Param('id') id: string,
   ) {
     isValidUUID(id);
-    checkServerIdentity(type, id);
+    checkEntity(type, id);
     let newFavorite: Favorites | null;
     switch (type) {
       case 'track':
@@ -64,8 +59,33 @@ export class FavoritesController {
     return this.favoritesService.findAll();
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.favoritesService.remove(+id);
+  @Delete(':type/:id')
+  @Header('Content-Type', 'application/json')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(
+    @Param('type') type: 'track' | 'album' | 'artist',
+    @Param('id') id: string,
+  ) {
+    isValidUUID(id);
+    checkEntity(type, id);
+    let newFavorite: boolean | null;
+    switch (type) {
+      case 'track':
+        newFavorite = this.favoritesService.remove(id, 'track');
+        break;
+      case 'album':
+        newFavorite = this.favoritesService.remove(id, 'album');
+        break;
+      case 'artist':
+        newFavorite = this.favoritesService.remove(id, 'artist');
+        break;
+      default:
+        break;
+    }
+    console.log(newFavorite);
+
+    if (!newFavorite) {
+      throw new NotFoundException('Does not exist');
+    }
   }
 }

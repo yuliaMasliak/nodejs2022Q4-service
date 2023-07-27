@@ -68,7 +68,16 @@ export class FavoritesService {
     return result;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} favorite`;
+  remove(id: string, type: string) {
+    switch (type) {
+      case 'track':
+        return Store.removeTrackFromFavs(id);
+      case 'artist':
+        return Store.removeArtistsFromFavs(id);
+      case 'album':
+        return Store.removeAlbumsFromFavs(id);
+      default:
+        break;
+    }
   }
 }
