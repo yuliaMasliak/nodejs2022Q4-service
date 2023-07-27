@@ -7,7 +7,7 @@ import { Store } from './store';
 
 export function isValidUUID(id: string) {
   if (!isUUID(id)) {
-    throw new BadRequestException('Not UUID type of user id');
+    throw new BadRequestException('Bad request. Not UUID type of id');
   }
 }
 export function getTimeStamp() {

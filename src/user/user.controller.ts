@@ -27,12 +27,10 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     const newUser = this.userService.create(createUserDto);
-    console.log(newUser);
-
     if (newUser !== null) {
       return newUser;
     } else {
-      throw new BadRequestException('User data fields required');
+      throw new BadRequestException('Missing required fields');
     }
   }
 
@@ -49,7 +47,7 @@ export class UserController {
     isValidUUID(id);
     const user = this.userService.findOne(id);
     if (user === undefined) {
-      throw new NotFoundException('User does not exist');
+      throw new NotFoundException('User not found');
     } else {
       return user;
     }
@@ -62,11 +60,11 @@ export class UserController {
     isValidUUID(id);
     const user = this.userService.update(id, updateUserDto);
     if (user === null) {
-      throw new BadRequestException('Required fields missing');
+      throw new BadRequestException('Missing required fields');
     } else if (user === undefined) {
-      throw new NotFoundException('User does not exist');
+      throw new NotFoundException('User not found');
     } else if (user === false) {
-      throw new ForbiddenException('Wrong old password');
+      throw new ForbiddenException('Wrong data');
     } else {
       return user;
     }
@@ -79,7 +77,7 @@ export class UserController {
     isValidUUID(id);
     const user = this.userService.remove(id);
     if (user === undefined) {
-      throw new NotFoundException('User does not exist');
+      throw new NotFoundException('Not Found');
     }
   }
 }

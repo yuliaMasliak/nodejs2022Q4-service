@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserEntity } from './entities/user.entity';
-import { User } from 'src/models';
 import { getTimeStamp } from 'src/helpers';
 import { Store } from 'src/store';
 
