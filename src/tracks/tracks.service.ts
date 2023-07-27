@@ -9,12 +9,7 @@ export class TracksService {
   private tracks: Track[] = [];
 
   create(createTrackDto: CreateTrackDto) {
-    if (
-      createTrackDto.name &&
-      createTrackDto.artistId &&
-      createTrackDto.albumId &&
-      createTrackDto.duration
-    ) {
+    if (createTrackDto.name && createTrackDto.duration) {
       const newTrack = new TrackEntity(createTrackDto);
       this.tracks.push(newTrack);
       return newTrack;
@@ -43,6 +38,9 @@ export class TracksService {
       index = i;
       return track.id === id;
     });
+    if (!updateTrackDto.name || !updateTrackDto.duration) {
+      return null;
+    }
     if (!track) {
       return undefined;
     }

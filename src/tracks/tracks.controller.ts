@@ -45,7 +45,7 @@ export class TracksController {
     isValidUUID(id);
     const track = this.tracksService.findOne(id);
     if (track === undefined) {
-      throw new NotFoundException('track does not exist');
+      throw new NotFoundException('Track does not exist');
     } else {
       return track;
     }
@@ -57,6 +57,8 @@ export class TracksController {
     const track = this.tracksService.update(id, updateTrackDto);
     if (track === undefined) {
       throw new NotFoundException('Track does not exist');
+    } else if (track === null) {
+      throw new BadRequestException('Required fields missing');
     } else {
       return track;
     }
@@ -64,6 +66,7 @@ export class TracksController {
 
   @Delete(':id')
   @Header('Content-Type', 'application/json')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
     isValidUUID(id);
     const track = this.tracksService.remove(id);

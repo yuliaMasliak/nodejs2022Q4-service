@@ -17,7 +17,6 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { isValidUUID } from '../helpers';
-import { isUUID } from 'class-validator';
 
 @Controller('user')
 export class UserController {
