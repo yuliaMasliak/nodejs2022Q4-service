@@ -60,6 +60,7 @@ export class TracksService {
       return undefined;
     }
     Store.tracks.splice(index, 1);
+    Store.removeTrackFromFavs(track.id);
     return true;
   }
 }

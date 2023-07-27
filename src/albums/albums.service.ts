@@ -65,6 +65,7 @@ export class AlbumsService {
       return undefined;
     }
     Store.updateTracksWithAlbum(album.id);
+    Store.removeAlbumsFromFavs(album.id);
     Store.albums.splice(index, 1);
     return true;
   }

@@ -65,6 +65,7 @@ export class ArtistsService {
       return undefined;
     }
     Store.updateStoreWithArtist(artist.id);
+    Store.removeArtistsFromFavs(artist.id);
     Store.artists.splice(index, 1);
     return true;
   }
