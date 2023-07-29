@@ -31,7 +31,6 @@ components:
           type: number
           example: 1655000000
       required:
-        - id
         - login
         - password
     Artist:
@@ -47,7 +46,6 @@ components:
           type: boolean
           example: false
       required:
-        - id
         - name
         - grammy
     Album:
@@ -67,7 +65,6 @@ components:
           format: uuid
           nullable: true
       required:
-        - id
         - name
         - year
     Track:
@@ -92,7 +89,6 @@ components:
           description: In seconds
           example: 262
       required:
-        - id
         - name
         - duration
     Favorites:
@@ -406,7 +402,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
   /track/{trackId}:
     parameters:
-      - name: id
+      - name: trackId
         in: path
         required: true
         schema:
@@ -562,7 +558,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
   /album/{albumId}:
     parameters:
-      - name: id
+      - name: albumId
         in: path
         required: true
         schema:
@@ -686,7 +682,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
   /artist/{artistId}:
     parameters:
-      - name: id
+      - name: artistId
         in: path
         required: true
         schema:
@@ -773,7 +769,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
   /favs/track/{trackId}:
     parameters:
-      - name: id
+      - name: trackId
         in: path
         required: true
         schema:
@@ -809,7 +805,7 @@ paths:
           description: Track was not found.
   /favs/album/{albumId}:
     parameters:
-      - name: id
+      - name: albumId
         in: path
         required: true
         schema:
@@ -845,7 +841,7 @@ paths:
           description: Album was not found.
   /favs/artist/{artistId}:
     parameters:
-      - name: id
+      - name: artistId
         in: path
         required: true
         schema:
