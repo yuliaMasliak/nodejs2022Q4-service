@@ -146,6 +146,7 @@ describe('artist (e2e)', () => {
         .send(createArtistDto);
 
       const { id: createdId } = creationResponse.body;
+      console.log(creationResponse.body);
 
       expect(creationResponse.status).toBe(StatusCodes.CREATED);
 
@@ -156,7 +157,7 @@ describe('artist (e2e)', () => {
           name: createArtistDto.name,
           grammy: false,
         });
-
+      console.log(updateResponse.body);
       expect(updateResponse.statusCode).toBe(StatusCodes.OK);
 
       const { id: updatedId, name, grammy } = updateResponse.body;
@@ -281,19 +282,20 @@ describe('artist (e2e)', () => {
         .send(createTrackDto);
 
       const { id: trackId } = creationTrackResponse.body;
+      console.log(creationTrackResponse.body);
 
       expect(creationTrackResponse.statusCode).toBe(StatusCodes.CREATED);
 
       const artistDeletionResponse = await unauthorizedRequest
         .delete(artistsRoutes.delete(artistId))
         .set(commonHeaders);
-
+      console.log(artistId);
       expect(artistDeletionResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
 
       const searchTrackResponse = await unauthorizedRequest
         .get(tracksRoutes.getById(trackId))
         .set(commonHeaders);
-
+      console.log(searchTrackResponse.body);
       expect(searchTrackResponse.statusCode).toBe(StatusCodes.OK);
 
       const { artistId: trackArtistId } = searchTrackResponse.body;
